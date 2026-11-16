@@ -1,0 +1,35 @@
+flowchart TD
+    A[Mensaje escrito o frase de un boton] --> B[Normalizar: minusculas, sin tildes, sin signos]
+    B --> C[Extraer parametros en orden: EAN, almacen, zona, porcentaje, cantidad]
+    C --> P{Habia una consulta esperando un dato y llego solo el dato?}
+    P -- Si --> PP[Retomar la consulta pendiente]
+    P -- No --> E{Hay EAN?}
+    E -- Si --> F{Palabras: porcentaje, ahorro, descuento?}
+    F -- Si --> Q2[Consulta 2: porcentaje por EAN]
+    F -- No --> Q1[Consulta 1: precios por EAN]
+    E -- No --> EI{Numero largo que no es EAN?}
+    EI -- Si --> ERR[Avisar: un EAN tiene 11 a 14 digitos]
+    EI -- No --> G{Hay almacen o zona?}
+    G -- Si --> Q5[Consulta 5: por almacen o zona]
+    G -- No --> H{Hay porcentaje minimo, maximo o rango?}
+    H -- Si --> Q4[Consulta 4: descuentos por porcentaje]
+    H -- No --> I{Palabras: top, mayores, mejores?}
+    I -- Si --> Q3[Consulta 3: los n mayores o menores]
+    I -- No --> BU{Palabra: buscar?}
+    Q3 -.-> FI[Si sobran palabras de producto, se usan como filtro]
+    Q4 -.-> FI
+    Q5 -.-> FI
+    BU -- Si --> Q6[Extra: buscar por nombre]
+    BU -- No --> J{Tema reconocido pero falta el dato?}
+    J -- Si --> K[Pedir el dato y dejar la consulta pendiente]
+    J -- No --> NP{Las palabras que sobran coinciden con algun producto?}
+    NP -- Si --> Q6
+    NP -- No --> M[Menu con ejemplos]
+    PP --> V
+    Q1 --> V[Validar: existe, es ambiguo, rangos, precio valido]
+    Q2 --> V
+    Q3 --> V
+    Q4 --> V
+    Q5 --> V
+    Q6 --> V
+    V --> R[Respuesta: frase + tabla + avisos + sugerencias]

@@ -1,0 +1,25 @@
+flowchart TD
+    A[Leer Excel sin modificarlo] --> B[Hoja de zonas: corregir ALM-012 repetido a ALM-013]
+    A --> C[Hoja de productos]
+    C --> D[Limpiar textos: quitar espacios sobrantes]
+    D --> E[Crear columna de busqueda: minusculas y sin tildes]
+    E --> F[EAN: quitar espacios internos]
+    F --> G[Marcar EAN ambiguo si aparece en 2 productos]
+    G --> H[Pasar de tabla ancha a larga: una fila por producto y comercio]
+    H --> I{Par de precios vacio?}
+    I -- Si --> X[Descartar la fila]
+    I -- No --> J[Convertir texto numerico a numero]
+    J --> K[Mensaje de error o precio 0 pasa a sin dato]
+    K --> L{Hay precio original?}
+    L -- No --> M[Estado: precio no valido. Fuera de rankings]
+    L -- Si --> N{Precio con descuento?}
+    N -- Vacio o igual al original --> O[Estado: sin descuento]
+    N -- Mayor que el original --> P[Estado: precio inconsistente. Fuera de rankings]
+    N -- Menor que el original --> Q[Estado: con descuento, calcular porcentaje]
+    M --> R[Unir con zonas por almacen]
+    O --> R
+    P --> R
+    Q --> R
+    B --> R
+    R --> S[Producto sin almacen queda sin zona]
+    S --> T[Tabla limpia en memoria + registro de correcciones]

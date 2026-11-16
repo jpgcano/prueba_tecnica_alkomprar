@@ -1,0 +1,19 @@
+flowchart LR
+    C[Cliente] --> CAN[Canal: web, WhatsApp, Telegram]
+    CAN --> FE[Filtro de entrada: enmascara datos sensibles, limita abuso]
+    FE --> O[Orquestador]
+    O --> M[Modelo de lenguaje + prompt]
+    M -- llamada a funcion validada --> H[Herramientas de solo lectura]
+    H --> CAT[(Catalogo)]
+    H --> INV[(Inventario)]
+    H --> PRO[(Promociones)]
+    H --> PAG[(Medios de pago)]
+    H --> LOG[(Cobertura de envios)]
+    H --> RAG[(Politicas y preguntas frecuentes)]
+    H -- resultado marcado como datos no confiables --> M
+    M -- respuesta --> FS[Filtro de salida: valida cifras y evita fugas]
+    FS -- aprobada --> CAN
+    FS -- cifra sin respaldo --> ASE[Asesor humano]
+    O --> MEM[(Memoria de la conversacion)]
+    O -- escalamiento --> ASE
+    O --> REG[(Registro, metricas e intentos detectados)]
